@@ -1,53 +1,109 @@
 import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 /**
  * Main application for the Data Analysis Mini‑Project.
- *
- * TODO:
- *  - Update the path to your dataset file
- *  - Read the CSV file using Scanner
- *  - Parse each row and extract the correct columns
- *  - Construct Data objects from each row
- *  - Store them in an array
- *  - Write methods to analyze the dataset (min, max, average, filters, etc.)
- *  - Print insights and answer your guiding question
- *  - Add Javadoc comments for any methods you create
+ * Analyzes world indicators data including birth rates and life expectancy.
  */
 public class App {
 
     public static void main(String[] args) {
+        // File path to the CSV dataset
+        File file = new File(".vscode/WorldIndicators2000 (1).csv");
 
-        // TODO: Update this with your CSV file path
-        File file = new File("data/your_dataset.csv");
+        // Check if file exists
+        if (!file.exists()) {
+            System.out.println("Error: File not found at " + file.getAbsolutePath());
+            return;
+        }
 
-        // TODO: Create an array of Data objects to store data
+        // Array to store WorldData objects
+        WorldData[] worldDataArray = new WorldData[500]; // Buffer size for data
+        int dataCount = 0;
 
+        try {
+            // Read file using Scanner
+            Scanner scanner = new Scanner(file);
 
-        // TODO: Read file using Scanner
-        // - Skip header if needed
-        // - Loop through rows
-        // - Split each line by commas
-        // - Convert text to numbers when needed
-        // - Create new Data objects
-        // - Add to your array
+            // Skip header row
+            if (scanner.hasNextLine()) {
+                scanner.nextLine();
+            }
 
+            // Loop through rows and parse CSV data
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                
+                // Split by comma
+                String[] parts = line.split(",");
 
-        // TODO: Call your analysis methods
-        // Example:
-        // double maxValue = findMaxValue(dataList);
-        // double average = computeAverageValue(dataList);
+                // Extract country, birth rate, and life expectancy
+                // Column 0: Country
+                // Column 2: Birth Rate
+                // Column 15: Life Expectancy Female
+                // Column 16: Life Expectancy Male
+                
+                if (parts.length > 16) {
+                    try {
+                        String country = parts[0].trim();
+                        double birthRate = Double.parseDouble(parts[2].trim());
+                        
+                        // Use female life expectancy (column 15)
+                        double lifeExpectancy = Double.parseDouble(parts[15].trim());
 
+                        // Create new WorldData object
+                        WorldData data = new WorldData(country, birthRate, lifeExpectancy);
+                        worldDataArray[dataCount] = data;
+                        dataCount++;
 
-        // TODO: Print insights
-        // - Number of rows loaded
-        // - Min, max, average, or any other findings
-        // - Final answer to your guiding question
+                    } catch (NumberFormatException e) {
+                        // Skip rows with invalid data
+                        continue;
+                    }
+                }
+            }
 
+            scanner.close();
 
-        // OPTIONAL TODO:
-        // Add user interaction:
-        // Ask the user what kind of analysis they want to see
+            // Resize array to actual size
+            WorldData[] finalData = new WorldData[dataCount];
+            for (int i = 0; i < dataCount; i++) {
+                finalData[i] = worldDataArray[i];
+            }
+
+            // Print insights
+            System.out.println("=== World Data Analysis ===\n");
+            System.out.println("Number of countries loaded: " + dataCount);
+            System.out.println();
+
+            // Birth Rate Analysis
+            System.out.println("--- Birth Rate Statistics ---");
+            System.out.printf("Maximum Birth Rate: %.4f\n", WorldData.maxBirthRate(finalData));
+            System.out.printf("Minimum Birth Rate: %.4f\n", WorldData.minBirthRate(finalData));
+            System.out.printf("Average Birth Rate: %.4f\n", WorldData.averageBirthRate(finalData));
+            System.out.println();
+
+            // Life Expectancy Analysis
+            System.out.println("--- Life Expectancy Statistics ---");
+            System.out.printf("Maximum Life Expectancy: %.2f years\n", WorldData.maxLifeExpectancy(finalData));
+            System.out.printf("Minimum Life Expectancy: %.2f years\n", WorldData.minLifeExpectancy(finalData));
+            System.out.printf("Average Life Expectancy: %.2f years\n", WorldData.averageLifeExpectancy(finalData));
+            System.out.println();
+
+            // Additional Analysis
+            System.out.println("--- Additional Insights ---");
+            int highBirthRateCount = WorldData.countBirthRateAbove(finalData, 0.03);
+            System.out.println("Countries with birth rate > 0.03: " + highBirthRateCount);
+            System.out.println();
+
+            // Comparison Analysis
+            System.out.println("--- Birth Rate vs Life Expectancy Comparison ---");
+            System.out.println(WorldData.compareBirthRateAndLife(finalData));
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + e.getMessage());
+        }
     }
-
 
 }
