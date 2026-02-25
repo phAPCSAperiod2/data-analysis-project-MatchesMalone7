@@ -66,12 +66,12 @@ UML_Diagram.png (or UML_Diagram.pdf)
 
 ## 🧩 Step 1 — Choose Your Dataset
 
-**Dataset Name:**  
+**Dataset Name:**
+World data
 **Source / Link:**  
-
+https://runestone.academy/ns/books/published/csawesome2/external/_static/datasets/WorldIndicators2000.csv
 **What this dataset contains (2–3 sentences):**  
-____________________________________________________________________  
-____________________________________________________________________  
+It contains data for country name, birth, and life expectancy.
 
 ---
 
@@ -80,8 +80,8 @@ ____________________________________________________________________
 Your guiding question should be something you can answer using your dataset.
 
 **My guiding question:**  
-____________________________________________________________________  
-____________________________________________________________________  
+What is the correlation between countries and birth rate?
+
 
 Examples:
 
