@@ -71,7 +71,7 @@ World data
 **Source / Link:**  
 https://runestone.academy/ns/books/published/csawesome2/external/_static/datasets/WorldIndicators2000.csv
 **What this dataset contains (2–3 sentences):**  
-It contains data for country name, birth, and life expectancy.
+It contains data for country name, birth, and life expectancy. This will be used to determine the correlation between some of these items.
 
 ---
 
@@ -137,16 +137,18 @@ In `Main.java`, you must:
 You must write **at least two algorithms** to analyze your dataset.
 
 ### Required: Choose 2 or more algorithms
-- [ ] Minimum value of attribute  
-- [ ] Maximum value of attribute  
+- [Y] Minimum value of attribute  
+- [Y] Maximum value of attribute  
 - [ ] Average of attribute  
 - [ ] Filter by category  
 - [ ] Count items matching a condition  
 
 **Algorithms I will implement:**
 
-1. __________________________________________  
-2. __________________________________________  
+1. Required Birth rate  
+2. Required Life Expectancy
+3. Count how many objects meet a condition
+4. Compare two attributes
 
 Optional extras:  
 - Sorting  
