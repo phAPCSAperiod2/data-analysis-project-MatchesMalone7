@@ -102,28 +102,6 @@ You must create a class that represents **one row** of your dataset.
 
 ### ✏ Include your class diagram
 
-```
-classDiagram
-    class WorldData {
-        - String country
-        - double birthRate
-        - double lifeExpectancy
-        + WorldData(String country, double birthRate, double lifeExpectancy)
-        + String getCountry()
-        + double getBirthRate()
-        + double getLifeExpectancy()
-        + static double maxBirthRate(WorldData[] data)
-        + static double minBirthRate(WorldData[] data)
-        + static double averageBirthRate(WorldData[] data)
-        + static double maxLifeExpectancy(WorldData[] data)
-        + static double minLifeExpectancy(WorldData[] data)
-        + static double averageLifeExpectancy(WorldData[] data)
-        + static int countBirthRateAbove(WorldData[] data, double threshold)
-        + static String compareBirthRateAndLife(WorldData[] data)
-        + String toString()
-    }
-```
-
 
 ---<img width="612" height="333" alt="MAPS drawio" src="https://github.com/user-attachments/assets/fff2eec1-560e-4b70-a8d2-2ad3f95368e2" />
 
@@ -299,5 +277,3 @@ Allow the user to choose:
 
 Good luck, and have fun exploring your dataset! 🚀  
 You're now doing real data analysis — just like professional software engineers.
-
-<img width="612" height="333" alt="MAPS drawio" src="https://github.com/user-attachments/assets/c40afd48-a8a0-48f2-a642-09a581cfbce1" />
