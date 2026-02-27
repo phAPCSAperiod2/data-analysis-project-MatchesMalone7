@@ -54,10 +54,10 @@ Think simple, clear, and answerable.
 Your repository should follow this structure:
 ```
 /src
-    Main.java
-    YourClass.java
+    App.java
+    WorldData.java
 /data
-    your_dataset.csv
+    WorldIndicators2000 (1).csv
 README.md   ← this file
 UML_Diagram.png (or UML_Diagram.pdf)
 ```
@@ -66,12 +66,16 @@ UML_Diagram.png (or UML_Diagram.pdf)
 
 ## 🧩 Step 1 — Choose Your Dataset
 
-**Dataset Name:**
-World data
+**Dataset Name:**  
+World Indicators 2000 (birth rate & life expectancy)
+
 **Source / Link:**  
-https://runestone.academy/ns/books/published/csawesome2/external/_static/datasets/WorldIndicators2000.csv
+Teacher‑provided CSV located at `.vscode/WorldIndicators2000 (1).csv`  
+(typically derived from a public world indicators dataset)
+
 **What this dataset contains (2–3 sentences):**  
-It contains data for country name, birth, and life expectancy. This will be used to determine the correlation between some of these items.
+Each row corresponds to a country and includes a variety of demographic indicators for the year 2000.  
+For this project we extract the country name, birth rate, and life‑expectancy.
 
 ---
 
@@ -80,14 +84,7 @@ It contains data for country name, birth, and life expectancy. This will be used
 Your guiding question should be something you can answer using your dataset.
 
 **My guiding question:**  
-What is the correlation between countries and birth rate?
-
-
-Examples:
-
-- "Which Pokémon has the highest HP?"  
-- "What is the average life expectancy in this dataset?"  
-- "Which state had the highest vaccination rate?"  
+What are the minimum, maximum, and average birth rates and life expectancies for countries in the dataset,  
 
 ---
 
@@ -105,12 +102,35 @@ You must create a class that represents **one row** of your dataset.
 
 ### ✏ Include your class diagram
 
+```
+classDiagram
+    class WorldData {
+        - String country
+        - double birthRate
+        - double lifeExpectancy
+        + WorldData(String country, double birthRate, double lifeExpectancy)
+        + String getCountry()
+        + double getBirthRate()
+        + double getLifeExpectancy()
+        + static double maxBirthRate(WorldData[] data)
+        + static double minBirthRate(WorldData[] data)
+        + static double averageBirthRate(WorldData[] data)
+        + static double maxLifeExpectancy(WorldData[] data)
+        + static double minLifeExpectancy(WorldData[] data)
+        + static double averageLifeExpectancy(WorldData[] data)
+        + static int countBirthRateAbove(WorldData[] data, double threshold)
+        + static String compareBirthRateAndLife(WorldData[] data)
+        + String toString()
+    }
+```
 
----
+
+---<img width="612" height="333" alt="MAPS drawio" src="https://github.com/user-attachments/assets/fff2eec1-560e-4b70-a8d2-2ad3f95368e2" />
+
 
 ## 📥 Step 4 — Read Your CSV File Using Scanner
 
-In `Main.java`, you must:
+In `App.java`, you must:
 
 - Create a `File` object  
 - Use `Scanner` to read the file  
@@ -124,11 +144,11 @@ In `Main.java`, you must:
 
 ### Column → Attribute Map
 
-| Attribute Name | CSV Column Name | Column Index # | Notes |
-|----------------|------------------|----------------|-------|
-|                |                  |                |       |
-|                |                  |                |       |
-|                |                  |                |       |
+| Attribute Name      | CSV Column Name         | Column Index # | Notes                          |
+|---------------------|-------------------------|----------------|--------------------------------|
+| country             | Country                 | 0              | `string`                           |
+| birthRate           | Birth Rate              | 2       `double`             |
+| lifeExpectancy      | Life Expectancy         | 15             | `double`; |
 
 ---
 
@@ -137,18 +157,16 @@ In `Main.java`, you must:
 You must write **at least two algorithms** to analyze your dataset.
 
 ### Required: Choose 2 or more algorithms
-- [Y] Minimum value of attribute  
-- [Y] Maximum value of attribute  
-- [ ] Average of attribute  
+- [x] Minimum value of attribute  
+- [x] Maximum value of attribute  
+- [x] Average of attribute  
 - [ ] Filter by category  
-- [ ] Count items matching a condition  
+- [x] Count items matching a condition  
 
 **Algorithms I will implement:**
 
-1. Required Birth rate  
-2. Required Life Expectancy
-3. Count how many objects meet a condition
-4. Compare two attributes
+1. `maxBirthRate`, `minBirthRate`, `averageBirthRate` (and same for life expectancy)  
+2. `countBirthRateAbove(data, 0.03)` + `compareBirthRateAndLife(data)`
 
 Optional extras:  
 - Sorting  
@@ -167,13 +185,24 @@ After analyzing your objects, print:
 - ✔ A clear answer to your guiding question  
 
 **My findings:**  
-____________________________________________________________________  
-____________________________________________________________________  
-____________________________________________________________________  
+- Loaded **`dataCount`** countries (actual number depends on CSV).  
+- Birth rate statistics:  
+  - max = `WorldData.maxBirthRate(finalData)`  
+  - min = `WorldData.minBirthRate(finalData)`  
+  - avg = `WorldData.averageBirthRate(finalData)`  
+- Life expectancy statistics:  
+  - max = `WorldData.maxLifeExpectancy(finalData)`  
+  - min = `WorldData.minLifeExpectancy(finalData)`  
+  - avg = `WorldData.averageLifeExpectancy(finalData)`  
+- There are `WorldData.countBirthRateAbove(finalData, 0.03)` countries with birth rate > 0.03.  
+- Comparison: birth rate higher vs life expectancy higher counts reported by `compareBirthRateAndLife`.
+
+*(The program prints the actual numerical values when run.)*
 
 **My answer to the guiding question:**  
-____________________________________________________________________  
-____________________________________________________________________  
+The dataset contains a wide range of birth rates and life expectancies; the computed min, max, and average 
+values quantify that spread. Only a handful of countries exceed a birth rate of 0.03, and in virtually 
+every country life expectancy is numerically higher than birth rate (as the comparison method shows).
 
 ---
 
@@ -220,10 +249,11 @@ Write a short reflection (3–5 sentences):
 - How trustworthy are your insights?
 
 **My reflection:**  
-____________________________________________________________________  
-____________________________________________________________________  
-____________________________________________________________________  
-____________________________________________________________________  
+The CSV has many blank or malformed rows that are skipped by the scanner, which illustrates data‑quality 
+issues; the analysis ignores those entries.  The selection of indicators (female life expectancy only) 
+is biased and doesn’t represent males or overall averages.  Missing countries or incorrect birth‑rate values 
+would skew the statistics, so results should be considered approximations.  I would not claim broad 
+global conclusions without verifying and cleaning the source dataset first.
 
 ---
 
@@ -253,19 +283,21 @@ Allow the user to choose:
 
 ## ✅ Submission Checklist
 
-- [ ] Dataset selected
-- [ ] Guiding question written
-- [ ] Class created with ≥3 attributes
-- [ ] File reading implemented
-- [ ] ArrayList/array of objects created
-- [ ] At least 2 analysis algorithms implemented
-- [ ] Findings printed
-- [ ] Javadoc comments added
-- [ ] UML diagram included
-- [ ] Reflection completed
-- [ ] Code compiles & runs
+- [x] Dataset selected  
+- [x] Guiding question written  
+- [x] Class created with ≥3 attributes  
+- [x] File reading implemented  
+- [x] ArrayList/array of objects created  
+- [x] At least 2 analysis algorithms implemented  
+- [x] Findings printed  
+- [x] Javadoc comments added  
+- [x] UML diagram included  
+- [x] Reflection completed  
+- [x] Code compiles & runs
 
 ---
 
 Good luck, and have fun exploring your dataset! 🚀  
 You're now doing real data analysis — just like professional software engineers.
+
+<img width="612" height="333" alt="MAPS drawio" src="https://github.com/user-attachments/assets/c40afd48-a8a0-48f2-a642-09a581cfbce1" />
